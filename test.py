@@ -1,29 +1,12 @@
-from pynput import keyboard
-
-#The key combination to check
-COMBINATIONS = [
-    {keyboard.Key.up},
-    {keyboard.Key.down},
-    {keyboard.Key.right},
-    {keyboard.Key.left}
-]
-
-#The currently active modifiers
-current = set()
-
-def execute(key):
-    if key == keyboard.Key.up:
-        print("THING")
-
-def on_press(key):
-    if any([key in COMBO for COMBO in COMBINATIONS]):
-        current.add(key)
-        if any(all(k in current for k in COMBO) for COMBO in COMBINATIONS):
-            execute(key)
-
-def on_release(key):
-    if any([key in COMBO for COMBO in COMBINATIONS]):
-        current.remove(key)
-
-with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
-    listener.join()
+# Python program to print 
+# colored text and background 
+def prRed(skk): print("\033[91m {}\033[00m" .format(skk)) 
+def prGreen(skk): print("\033[92m {}\033[00m" .format(skk)) 
+def prYellow(skk): print("\033[93m {}\033[00m" .format(skk)) 
+def prLightPurple(skk): print("\033[94m {}\033[00m" .format(skk)) 
+def prPurple(skk): print("\033[95m {}\033[00m" .format(skk)) 
+def prCyan(skk): print("\033[96m {}\033[00m" .format(skk)) 
+def prLightGray(skk): print("\033[97m {}\033[00m" .format(skk)) 
+def prBlack(skk): print("\033[98m {}\033[00m" .format(skk)) 
+  
+print( "\033[91masdf\033[00m" )

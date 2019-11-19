@@ -1,7 +1,9 @@
+import sys
 import time
 import random
 from threading import Timer
 from pynput import keyboard
+from os import system, name 
 from time import sleep 
 
 gridLayout = [[]]
@@ -11,7 +13,7 @@ refresh = 0.1
 snakeSpeed = 0.1
 fruitSpawnTime = 5
 
-gridSymbol = "O"
+gridSymbol = 0
 fruitSymbol = "#"
 
 snakeHeadSymbol = "+"
@@ -71,16 +73,11 @@ def refreshCycle(): #thread
         grid = "\n"
         for i, row in enumerate(gridLayout):
             for cell in row:
-                if cell == snakeHeadSymbol or cell == snakeTailSymbol:
-                    grid = grid + "\033[91m" + str(cell) + "\033[00m"
-                elif cell == fruitSymbol:
-                    grid = grid + "\033[93m" + str(cell) + "\033[00m"
-                else:
-                    grid = grid + str(cell)
+                grid = grid + str(cell)
             grid = grid + "\n"
-            
-        print("Score:", score[0], flush=True)
-        print(grid, flush=True)
+        clear()
+        sys.stdout.write( "Score: " + str(score[0]) )
+        sys.stdout.write(grid)
         time.sleep(refresh)
     return
 
@@ -124,15 +121,15 @@ def snakeMovement(): #thread
 
 def fruit():
     while runGame[0] == 0:
-        x = random.randint(0, len(gridLayout)-1)
-        y = random.randint(0, len(gridLayout[0])-1)
-
         try:
-            gridLayout[x][y] = fruitSymbol
+            x = random.randint(0, len(gridLayout)-1)
+            y = random.randint(0, len(gridLayout[0])-1)
         except:
-            print("BAD RANDOM:", x,y, flush=True)
-            print("BAD RANDOM2:", len(gridLayout)-1,len(gridLayout[0])-1, flush=True)
+            #bad random generation
+            sys.stdout.write("BAD RANDOM:", x,y)
             pass
+
+        gridLayout[x][y] = fruitSymbol
 
         time.sleep(fruitSpawnTime)
     return
@@ -145,6 +142,14 @@ def fruit():
 
         
 #Functions--------------------------------------------------------------
+def clear(): 
+    # for windows 
+    if name == 'nt': 
+        _ = system('cls') 
+    # for mac and linux(here, os.name is 'posix') 
+    else: 
+        _ = system('clear') 
+
 def snakeDraw():
     for i in range( len(snake)-1 ): #-1 maybe error?
         if i == 0:
@@ -173,4 +178,4 @@ def main():
 #Functions END-----------------------------------------------------------
 
 main()
-print("GAME OVER", flush=True)
+sys.stdout.write("GAME OVER")
