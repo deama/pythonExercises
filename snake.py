@@ -7,12 +7,12 @@ from time import sleep
 gridLayout = [[]]
 snake = [[9,8],[9,9],[9,10],[9,11]]
 
-refresh = 0.1
+refresh = 0.05
 snakeSpeed = 0.1
-fruitSpawnTime = 5
+fruitSpawnTime = 3
 
-gridSymbol = "O"
-fruitSymbol = "#"
+gridSymbol = "#"
+fruitSymbol = "@"
 
 snakeHeadSymbol = "+"
 snakeTailSymbol = "="
@@ -36,13 +36,13 @@ COMBINATIONS = [
 current = set()
 
 def execute(key):
-    if key == keyboard.Key.up:
+    if key == keyboard.Key.up and direction[0] != 1:
         direction[0] = 0
-    elif key == keyboard.Key.down:
+    elif key == keyboard.Key.down and direction[0] != 0:
         direction[0] = 1
-    elif key == keyboard.Key.left:
+    elif key == keyboard.Key.left and direction[0] != 3:
         direction[0] = 2
-    elif key == keyboard.Key.right:
+    elif key == keyboard.Key.right and direction[0] != 2:
         direction[0] = 3
 
 def on_press(key):
@@ -103,6 +103,9 @@ def snakeMovement(): #thread
             if gridLayout[ snake[0][0] ][ snake[0][1] ] == fruitSymbol:
                 snake.append([0,0])
                 score[0] = score[0] + 1
+                
+            if gridLayout[ snake[0][0] ][ snake[0][1] ] == snakeTailSymbol:
+                runGame[0] = 1
 
             for i in range( 1, len(snake) ):
                 storeOld2[0] = snake[i][0]
@@ -155,7 +158,7 @@ def snakeDraw():
 def main():
     for i in range(0, 20): #y
         gridLayout.append([])
-        for p in range(0,30): #X
+        for p in range(0,40): #X
             gridLayout[i].append(gridSymbol)
     
     thread1 = Timer( refresh, refreshCycle )#repeatedly prints arena
