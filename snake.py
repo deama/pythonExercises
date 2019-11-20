@@ -104,7 +104,10 @@ def snakeMovement(): #thread
                 snake.append([0,0])
                 score[0] = score[0] + 1
                 
-            if gridLayout[ snake[0][0] ][ snake[0][1] ] == snakeTailSymbol:
+            if gridLayout[ snake[0][0] ][ snake[0][1] ] == snakeTailSymbol: #end game when snake head meets snake tail
+                runGame[0] = 1
+
+            if snake[0][0] < 0 or snake[0][1] < 0: #prevent snake from going negative
                 runGame[0] = 1
 
             for i in range( 1, len(snake) ):
