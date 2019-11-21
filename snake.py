@@ -1,7 +1,7 @@
 import time
 import random
 from threading import Timer
-from pynput import keyboard
+import keyboard
 from time import sleep 
 
 gridLayout = [[]]
@@ -21,43 +21,6 @@ direction = [0] #0 = up, 1 = down, 2 = left, 3 = right
 score = [0]
 runGame = [0] #0 = run, 1 = stop
 
-
-
-
-
-#KEY LISTENER-----------------------------------------------------
-COMBINATIONS = [
-    {keyboard.Key.up},
-    {keyboard.Key.down},
-    {keyboard.Key.left},
-    {keyboard.Key.right}
-]
-
-current = set()
-
-def execute(key):
-    if key == keyboard.Key.up and direction[0] != 1:
-        direction[0] = 0
-    elif key == keyboard.Key.down and direction[0] != 0:
-        direction[0] = 1
-    elif key == keyboard.Key.left and direction[0] != 3:
-        direction[0] = 2
-    elif key == keyboard.Key.right and direction[0] != 2:
-        direction[0] = 3
-
-def on_press(key):
-    if runGame[0] != 0:
-        return False
-    
-    if any([key in COMBO for COMBO in COMBINATIONS]):
-        current.add(key)
-        if any(all(k in current for k in COMBO) for COMBO in COMBINATIONS):
-            execute(key)
-
-def on_release(key):
-    if any([key in COMBO for COMBO in COMBINATIONS]):
-        current.remove(key)
-#KEY LISTENER END-----------------------------------------------------
 
 
 
@@ -151,6 +114,18 @@ def fruit():
 
         
 #Functions--------------------------------------------------------------
+def change(key):
+    if direction[0] == 0 and key == 1:
+        pass
+    elif direction[0] == 1 and key == 0:
+        pass
+    elif direction[0] == 2 and key == 3:
+        pass
+    elif direction[0] == 3 and key == 2:
+        pass
+    else:
+        direction[0] = key
+
 def snakeDraw():
     for i in range( len(snake)-1 ): #-1 maybe error?
         if i == 0:
@@ -173,10 +148,11 @@ def main():
     thread3 = Timer( refresh*10, fruit )
     thread3.start()
 
-    #Main thread starts listening for keys
-    with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
-        listener.join()
+
+    keyboard.add_hotkey( "up", lambda: change(0) )
+    keyboard.add_hotkey( "down", lambda: change(1) )
+    keyboard.add_hotkey( "left", lambda: change(2) )
+    keyboard.add_hotkey( "right", lambda: change(3) )
 #Functions END-----------------------------------------------------------
 
 main()
-print("GAME OVER", flush=True)
